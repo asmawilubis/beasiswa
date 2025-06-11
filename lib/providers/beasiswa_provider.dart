@@ -21,4 +21,22 @@ class BeasiswaProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  Future<bool> applyForBeasiswa({
+    required String token,
+    required int scholarshipId,
+    required String description, // Hanya butuh satu field deskripsi
+  }) async {
+    try {
+      await BeasiswaServices().applyForBeasiswa(
+        token: token,
+        scholarshipId: scholarshipId,
+        description: description,
+      );
+      return true;
+    } catch (e) {
+      print('Error applying for scholarship: $e');
+      return false;
+    }
+  }
 }

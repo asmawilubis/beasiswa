@@ -24,4 +24,41 @@ class BeasiswaServices {
       throw Exception('Failed to load beasiswa: ${response.body}');
     }
   }
+
+  Future<bool> applyForBeasiswa({
+    required String token,
+    required int scholarshipId,
+    required String
+    description, // Ini akan berisi gabungan alasan, no. telp, dan prestasi
+  }) async {
+    // Sesuaikan dengan endpoint di routes/api.php Anda, misal: '/regs' atau '/registrations'
+    // Berdasarkan RegController, methodnya bernama 'details', jadi kita asumsikan routenya '/details'
+    var url = Uri.parse('$baseUrl/details');
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
+
+    // Struktur body disesuaikan dengan yang diharapkan RegController
+    var body = jsonEncode({
+      'description': description,
+      'status':
+          'pending', // Sesuai validasi di controller: 'pending', 'accepted', 'rejected'
+      'details': [
+        {'beasiswa_id': scholarshipId},
+      ],
+    });
+
+    print('Apply Request Body: $body');
+    var response = await http.post(url, headers: headers, body: body);
+    print('Apply Response: ${response.body}');
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      // Tangani error validasi dari Laravel (status code 422)
+      if (response.statusCode == 422) {
+        var errorData = jsonDecode(response.body)['errors'];
+        throw Exception('Gagal melakukan pendaftaran: $errorData');
+      }
+      throw Exception('Gagal melakukan pendaftaran: ${response.body}');
+    }
+  }
 }
