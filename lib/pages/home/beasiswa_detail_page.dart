@@ -6,20 +6,18 @@ import 'package:beasiswa/theme.dart';
 import 'package:provider/provider.dart';
 
 class BeasiswaDetailPage extends StatelessWidget {
-  // Ubah ke StatelessWidget
   final BeasiswaModel beasiswa;
   const BeasiswaDetailPage({required this.beasiswa, Key? key})
     : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Akses provider di dalam build method
     BeasiswaProvider beasiswaProvider = Provider.of<BeasiswaProvider>(context);
 
-    // Panggil fungsi untuk memeriksa status pendaftaran
-    bool sudahTerdaftar = beasiswaProvider.isRegistered(beasiswa.id);
+    final pendaftaran = beasiswaProvider.getRegistrationFor(beasiswa.id);
 
     Widget header() {
+      // ... (kode header tidak berubah)
       return Column(
         children: [
           Container(
@@ -60,65 +58,85 @@ class BeasiswaDetailPage extends StatelessWidget {
       );
     }
 
-    // Widget baru untuk tombol di bagian bawah halaman
-    Widget bottomButton() {
-      // Jika sudah terdaftar, tampilkan widget status
-      if (sudahTerdaftar) {
+    Widget buildBottomWidget() {
+      // ... (kode buildBottomWidget tidak berubah, sudah benar)
+      if (pendaftaran == null) {
         return Container(
-          height: 50,
+          width: double.infinity,
+          height: 54,
           margin: EdgeInsets.all(defaultMargin),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.green, // Warna untuk menandakan status
-            border: Border.all(color: Colors.green.shade700),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.check_circle_outline, color: Colors.white),
-              SizedBox(width: 12),
-              Text(
-                'Anda Sudah Terdaftar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          child: TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => DaftarBeasiswaFormPage(beasiswa: beasiswa),
                 ),
+              );
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: secondaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-            ],
+            ),
+            child: Text(
+              'Daftar Beasiswa',
+              style: buttonLoginStyle.copyWith(
+                fontSize: 16,
+                fontWeight: semiBold,
+              ),
+            ),
           ),
         );
       }
 
-      // Jika belum terdaftar, tampilkan tombol untuk mendaftar
+      Color statusColor;
+      String statusText;
+      IconData statusIcon;
+      switch (pendaftaran.status.toLowerCase()) {
+        case 'accepted':
+          statusColor = Colors.green;
+          statusText = 'Pendaftaran Diterima';
+          statusIcon = Icons.check_circle;
+          break;
+        case 'rejected':
+          statusColor = alertColor;
+          statusText = 'Pendaftaran Ditolak';
+          statusIcon = Icons.cancel;
+          break;
+        case 'pending':
+        default:
+          statusColor = secondaryColor;
+          statusText = 'Status: Dalam Peninjauan';
+          statusIcon = Icons.hourglass_top_rounded;
+          break;
+      }
       return Container(
-        width: double.infinity,
-        height: 54,
+        constraints: const BoxConstraints(minHeight: 50),
         margin: EdgeInsets.all(defaultMargin),
-        child: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => DaftarBeasiswaFormPage(beasiswa: beasiswa),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: statusColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(statusIcon, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                statusText,
+                textAlign: TextAlign.center,
+                style: primaryTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            );
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: secondaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
             ),
-          ),
-          child: Text(
-            'Daftar Beasiswa',
-            style: buttonLoginStyle.copyWith(
-              fontSize: 16,
-              fontWeight: semiBold,
-            ),
-          ),
+          ],
         ),
       );
     }
@@ -134,14 +152,15 @@ class BeasiswaDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ... (kode untuk nama, kategori, deskripsi, dll. tetap sama)
             Container(
               margin: EdgeInsets.only(
                 top: defaultMargin,
                 left: defaultMargin,
                 right: defaultMargin,
               ),
+              // --- PERBAIKAN UTAMA DI SINI ---
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
@@ -161,6 +180,35 @@ class BeasiswaDetailPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Tampilkan chip status jika sudah terdaftar
+                  if (pendaftaran != null) ...[
+                    const SizedBox(width: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: secondaryColor),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.check, color: secondaryColor, size: 14),
+                          const SizedBox(width: 4),
+                          Text(
+                            'TERDAFTAR',
+                            style: secondaryTextStyle.copyWith(
+                              color: secondaryColor,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -202,14 +250,7 @@ class BeasiswaDetailPage extends StatelessWidget {
       backgroundColor: backgroundColor4,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              header(),
-              content(),
-              // Panggil widget tombol kondisional di sini
-              bottomButton(),
-            ],
-          ),
+          child: Column(children: [header(), content(), buildBottomWidget()]),
         ),
       ),
     );

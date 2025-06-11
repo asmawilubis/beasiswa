@@ -147,6 +147,7 @@ class _BeasiswaListPageState extends State<BeasiswaListPage> {
                         if (reg.details.isNotEmpty) {
                           return BeasiswaListCard(
                             beasiswa: reg.details.first.beasiswa,
+                            status: reg.status,
                           );
                         }
                         return const SizedBox.shrink(); // Widget kosong
