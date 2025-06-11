@@ -11,6 +11,12 @@ class BeasiswaProvider with ChangeNotifier {
   List<RegModel> _registrations = [];
   List<RegModel> get registrations => _registrations;
 
+  bool isRegistered(int beasiswaId) {
+    return _registrations.any(
+      (reg) => reg.details.any((detail) => detail.beasiswa?.id == beasiswaId),
+    );
+  }
+
   set beasiswa(List<BeasiswaModel> beasiswa) {
     _beasiswa = beasiswa;
     notifyListeners();
@@ -57,10 +63,12 @@ class BeasiswaProvider with ChangeNotifier {
     }
   }
 
-  bool isRegistered(int beasiswaId) {
-    // Gunakan 'any' untuk mengecek apakah ada elemen yang memenuhi kondisi
-    return _registrations.any(
-      (reg) => reg.details.any((detail) => detail.beasiswa?.id == beasiswaId),
-    );
+  RegModel? getRegistrationFor(int beasiswaId) {
+    for (final reg in _registrations) {
+      if (reg.details.any((detail) => detail.beasiswa?.id == beasiswaId)) {
+        return reg;
+      }
+    }
+    return null;
   }
 }

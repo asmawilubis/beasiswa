@@ -66,7 +66,7 @@ class BeasiswaServices {
   // --- TAMBAHKAN FUNGSI INI ---
   Future<List<RegModel>> getRegistrations(String token) async {
     // Sesuaikan dengan endpoint di routes/api.php Anda, biasanya '/regs'
-    var url = Uri.parse('$baseUrl/reg');
+    var url = Uri.parse('$baseUrl/regs');
     var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.get(url, headers: headers);

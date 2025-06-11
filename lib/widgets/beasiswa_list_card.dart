@@ -7,7 +7,49 @@ import 'package:beasiswa/theme.dart';
 
 class BeasiswaListCard extends StatelessWidget {
   final BeasiswaModel beasiswa;
-  const BeasiswaListCard({required this.beasiswa, Key? key}) : super(key: key);
+  final String status;
+  const BeasiswaListCard({
+    required this.beasiswa,
+    required this.status,
+    Key? key,
+  }) : super(key: key);
+
+  Widget _buildStatusBadge(String status) {
+    Color statusColor;
+    String statusText;
+
+    switch (status.toLowerCase()) {
+      case 'accepted':
+        statusColor = Colors.green;
+        statusText = 'Diterima';
+        break;
+      case 'rejected':
+        statusColor = alertColor;
+        statusText = 'Ditolak';
+        break;
+      case 'pending':
+      default:
+        statusColor = secondaryColor;
+        statusText = 'Pending';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: statusColor.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        statusText,
+        style: TextStyle(
+          color: statusColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 10,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +103,8 @@ class BeasiswaListCard extends StatelessWidget {
                     beasiswa.category.name, // Data dinamis
                     style: secondaryTextStyle.copyWith(fontSize: 12),
                   ),
+                  const SizedBox(height: 6),
+                  _buildStatusBadge(status),
                 ],
               ),
             ),
