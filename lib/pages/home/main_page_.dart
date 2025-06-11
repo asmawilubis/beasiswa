@@ -1,4 +1,3 @@
-import 'package:beasiswa/pages/home/beasiswa_page.dart';
 import 'package:beasiswa/pages/home/home_page.dart';
 import 'package:beasiswa/pages/home/profile_page.dart';
 import 'package:beasiswa/pages/home/daftar_beasiswa_page.dart';

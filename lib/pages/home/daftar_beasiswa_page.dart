@@ -65,18 +65,10 @@ class _BeasiswaListPageState extends State<BeasiswaListPage> {
               style: formTextStyle.copyWith(fontSize: 16, fontWeight: medium),
             ),
             const SizedBox(height: 12),
-            Text(
-              'Ayo cari dan daftar beasiswa impianmu!',
-              style: secondaryTextStyle,
-            ),
-            const SizedBox(height: 20),
             SizedBox(
               height: 44,
               child: TextButton(
                 onPressed: () {
-                  // Arahkan ke halaman utama untuk mencari beasiswa
-                  // Ini memerlukan akses ke state MainPage, cara paling sederhana
-                  // adalah dengan kembali ke halaman sebelumnya atau navigasi ke '/home'
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     '/home',

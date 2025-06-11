@@ -37,6 +37,7 @@ class BeasiswaProvider with ChangeNotifier {
         scholarshipId: scholarshipId,
         description: description,
       );
+      await getRegistrations(token);
       return true;
     } catch (e) {
       print('Error applying for scholarship: $e');
@@ -44,7 +45,6 @@ class BeasiswaProvider with ChangeNotifier {
     }
   }
 
-  // --- TAMBAHKAN FUNGSI INI ---
   Future<void> getRegistrations(String token) async {
     try {
       List<RegModel> registrationsData = await BeasiswaServices()
@@ -53,7 +53,14 @@ class BeasiswaProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print('Gagal mendapatkan data pendaftaran: $e');
-      rethrow; // Lemparkan kembali error agar bisa ditangkap oleh FutureBuilder
+      rethrow;
     }
+  }
+
+  bool isRegistered(int beasiswaId) {
+    // Gunakan 'any' untuk mengecek apakah ada elemen yang memenuhi kondisi
+    return _registrations.any(
+      (reg) => reg.details.any((detail) => detail.beasiswa?.id == beasiswaId),
+    );
   }
 }
