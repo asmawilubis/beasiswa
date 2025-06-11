@@ -67,17 +67,9 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                'assets/setting.png',
-                width: 21,
-                color: currentIndex == 2 ? primaryColor : Colors.grey,
-              ),
-              label: 'Beasiswa List',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
                 'assets/profile.png',
                 width: 21,
-                color: currentIndex == 3 ? primaryColor : Colors.grey,
+                color: currentIndex == 2 ? primaryColor : Colors.grey,
               ),
               label: 'Profile',
             ),
@@ -92,10 +84,8 @@ class _MainPageState extends State<MainPage> {
       case 0:
         return HomePage();
       case 1:
-        return BeasiswaPage();
-      case 2:
         return BeasiswaListPage();
-      case 3:
+      case 2:
         return ProfilePage();
       default:
         return HomePage();

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beasiswa/models/beasiswa_model.dart';
+import 'package:beasiswa/models/reg_model.dart';
 import 'package:http/http.dart' as http;
 
 class BeasiswaServices {
@@ -59,6 +60,26 @@ class BeasiswaServices {
         throw Exception('Gagal melakukan pendaftaran: $errorData');
       }
       throw Exception('Gagal melakukan pendaftaran: ${response.body}');
+    }
+  }
+
+  // --- TAMBAHKAN FUNGSI INI ---
+  Future<List<RegModel>> getRegistrations(String token) async {
+    // Sesuaikan dengan endpoint di routes/api.php Anda, biasanya '/regs'
+    var url = Uri.parse('$baseUrl/regs');
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
+
+    var response = await http.get(url, headers: headers);
+    print('Get Registrations Response: ${response.body}');
+
+    if (response.statusCode == 200) {
+      // API Laravel dengan paginate() mengembalikan struktur { data: [...] }
+      var data = jsonDecode(response.body)['data']['data'];
+      List<RegModel> registrations =
+          (data as List).map((reg) => RegModel.fromJson(reg)).toList();
+      return registrations;
+    } else {
+      throw Exception('Gagal memuat beasiswa terdaftar');
     }
   }
 }

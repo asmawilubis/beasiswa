@@ -1,11 +1,15 @@
 import 'package:beasiswa/models/beasiswa_model.dart';
 import 'package:beasiswa/services/beasiswa_services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:beasiswa/models/reg_model.dart';
 
 class BeasiswaProvider with ChangeNotifier {
   List<BeasiswaModel> _beasiswa = [];
 
   List<BeasiswaModel> get beasiswa => _beasiswa;
+
+  List<RegModel> _registrations = [];
+  List<RegModel> get registrations => _registrations;
 
   set beasiswa(List<BeasiswaModel> beasiswa) {
     _beasiswa = beasiswa;
@@ -37,6 +41,19 @@ class BeasiswaProvider with ChangeNotifier {
     } catch (e) {
       print('Error applying for scholarship: $e');
       return false;
+    }
+  }
+
+  // --- TAMBAHKAN FUNGSI INI ---
+  Future<void> getRegistrations(String token) async {
+    try {
+      List<RegModel> registrationsData = await BeasiswaServices()
+          .getRegistrations(token);
+      _registrations = registrationsData;
+      notifyListeners();
+    } catch (e) {
+      print('Gagal mendapatkan data pendaftaran: $e');
+      rethrow; // Lemparkan kembali error agar bisa ditangkap oleh FutureBuilder
     }
   }
 }

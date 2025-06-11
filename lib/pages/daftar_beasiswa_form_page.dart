@@ -1,5 +1,3 @@
-// lib/pages/daftar_beasiswa_form_page.dart
-
 import 'package:beasiswa/models/beasiswa_model.dart';
 import 'package:beasiswa/providers/auth_provider.dart';
 import 'package:beasiswa/providers/beasiswa_provider.dart';
@@ -55,14 +53,14 @@ class _DaftarBeasiswaFormPageState extends State<DaftarBeasiswaFormPage> {
 
         // Gabungkan semua input menjadi satu string deskripsi
         String fullDescription = """
-Nomor Telepon: ${phoneController.text}
+          Nomor Telepon: ${phoneController.text}
 
-Alasan Mendaftar:
-${reasonController.text}
+          Alasan Mendaftar:
+          ${reasonController.text}
 
-Prestasi:
-${achievementsController.text}
-""";
+          Prestasi:
+          ${achievementsController.text}
+          """;
 
         bool success = await beasiswaProvider.applyForBeasiswa(
           token: authProvider.user.token!,
