@@ -1,3 +1,4 @@
+import 'package:beasiswa/pages/admin/admin_main_page.dart';
 import 'package:beasiswa/pages/edit_profile_page.dart';
 import 'package:beasiswa/pages/splash_page.dart';
 import 'package:beasiswa/pages/login_page.dart';
@@ -5,6 +6,7 @@ import 'package:beasiswa/pages/register_page.dart';
 import 'package:beasiswa/pages/home/main_page_.dart';
 import 'package:beasiswa/providers/auth_provider.dart';
 import 'package:beasiswa/providers/beasiswa_provider.dart';
+import 'package:beasiswa/providers/admin_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => BeasiswaProvider()),
+        ChangeNotifierProvider(create: (context) => AdminProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -30,6 +33,8 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterPage(),
           '/home': (context) => MainPage(),
           '/edit-profile': (context) => EditProfilePage(),
+          // admin
+          '/admin': (context) => AdminMainPage(),
         },
       ),
     );

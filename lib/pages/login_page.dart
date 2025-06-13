@@ -29,7 +29,11 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
       )) {
-        Navigator.pushNamed(context, '/home');
+        if (authProvider.user.roles == 'admin') {
+          Navigator.pushNamed(context, '/admin');
+        } else {
+          Navigator.pushNamed(context, '/home');
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -38,6 +42,17 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       }
+
+      // {
+      //   Navigator.pushNamed(context, '/home');
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: alertColor,
+      //       content: Text('Login Gagal', textAlign: TextAlign.center),
+      //     ),
+      //   );
+      // }
 
       setState(() {
         isLoading = false;
