@@ -15,10 +15,9 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
 
   Widget customBottomNav() {
-    // Definisikan border radius di satu tempat agar mudah diubah dan konsisten
     final BorderRadius borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(20), // Atur lengkungan sudut kiri bawah
-      bottomRight: Radius.circular(20), // Atur lengkungan sudut kanan bawah
+      bottomLeft: Radius.circular(20),
+      bottomRight: Radius.circular(20),
     );
 
     return Container(
@@ -28,8 +27,8 @@ class _MainPageState extends State<MainPage> {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha((0.3 * 255).toInt()),
-            blurRadius: 15, // Atur blur untuk kelembutan shadow
-            offset: Offset(0, -3), // Geser shadow ke atas
+            blurRadius: 15,
+            offset: Offset(0, -3),
           ),
         ],
       ),

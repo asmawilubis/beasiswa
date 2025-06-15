@@ -2,6 +2,7 @@ import 'package:beasiswa/models/reg_model.dart';
 import 'package:beasiswa/services/beasiswa_services.dart';
 import 'package:flutter/material.dart';
 import 'package:beasiswa/models/category_model.dart';
+import 'package:beasiswa/models/beasiswa_model.dart';
 
 class AdminProvider with ChangeNotifier {
   final BeasiswaServices _beasiswaServices = BeasiswaServices();
@@ -12,26 +13,38 @@ class AdminProvider with ChangeNotifier {
   List<CategoryModel> _categories = [];
   List<CategoryModel> get categories => _categories;
 
+  List<BeasiswaModel> _allBeasiswas = [];
+  List<BeasiswaModel> get allBeasiswas => _allBeasiswas;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  // --- FUNGSI BARU UNTUK MENGGABUNGKAN SEMUA FETCH DATA AWAL ---
+  void clearAdminData() {
+    _allRegistrations = [];
+    _categories = [];
+    _allBeasiswas = [];
+    _isLoading = false;
+    notifyListeners();
+    print('AdminProvider data cleared.');
+  }
+
+  // FUNGSI UNTUK MENGGABUNGKAN SEMUA FETCH DATA AWAL
   Future<void> initDashboardData(String token) async {
-    // Set loading menjadi true hanya di sini, sekali di awal
     _isLoading = true;
     notifyListeners();
 
     try {
-      // Jalankan kedua fetch secara bersamaan untuk efisiensi
+      // Jalankan semua fetch secara bersamaan untuk efisiensi
       final results = await Future.wait([
         _beasiswaServices.getAllRegistrations(token),
         _beasiswaServices.getAdminCategories(token),
+        _beasiswaServices.getBeasiswa(),
       ]);
 
-      // results[0] adalah hasil dari getAllRegistrations
+      // Tetapkan hasil ke state masing-masing
       _allRegistrations = results[0] as List<RegModel>;
-      // results[1] adalah hasil dari getAdminCategories
       _categories = results[1] as List<CategoryModel>;
+      _allBeasiswas = results[2] as List<BeasiswaModel>;
     } catch (e) {
       print("Error initializing dashboard data: $e");
     } finally {
@@ -40,9 +53,6 @@ class AdminProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // Fungsi-fungsi di bawah ini tetap ada untuk digunakan secara spesifik,
-  // seperti untuk pull-to-refresh atau setelah melakukan aksi CRUD.
 
   Future<void> fetchAllRegistrations(String token) async {
     try {
@@ -62,7 +72,14 @@ class AdminProvider with ChangeNotifier {
     }
   }
 
-  // --- CRUD FUNCTIONS (TIDAK BERUBAH) ---
+  Future<void> fetchAllBeasiswas() async {
+    try {
+      _allBeasiswas = await _beasiswaServices.getBeasiswa();
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching all beasiswas: $e");
+    }
+  }
 
   Future<bool> createCategory({
     required String token,
@@ -73,7 +90,6 @@ class AdminProvider with ChangeNotifier {
       await fetchCategories(token);
       return true;
     } catch (e) {
-      print("Error creating category: $e");
       return false;
     }
   }
@@ -88,7 +104,6 @@ class AdminProvider with ChangeNotifier {
       await fetchCategories(token);
       return true;
     } catch (e) {
-      print("Error updating category: $e");
       return false;
     }
   }
@@ -100,7 +115,61 @@ class AdminProvider with ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      print("Error deleting category: $e");
+      return false;
+    }
+  }
+
+  Future<bool> createBeasiswa({
+    required String token,
+    required String name,
+    required String description,
+    required int categoryId,
+  }) async {
+    try {
+      await _beasiswaServices.createBeasiswa(
+        token: token,
+        name: name,
+        description: description,
+        categoryId: categoryId,
+      );
+      await fetchAllBeasiswas();
+      return true;
+    } catch (e) {
+      print("Error creating beasiswa: $e");
+      throw e.toString();
+    }
+  }
+
+  Future<bool> updateBeasiswa({
+    required String token,
+    required int id,
+    required String name,
+    required String description,
+    required int categoryId,
+  }) async {
+    try {
+      await _beasiswaServices.updateBeasiswa(
+        token: token,
+        id: id,
+        name: name,
+        description: description,
+        categoryId: categoryId,
+      );
+      await fetchAllBeasiswas();
+      return true;
+    } catch (e) {
+      print("Error updating beasiswa: $e");
+      throw e.toString();
+    }
+  }
+
+  Future<bool> deleteBeasiswa({required String token, required int id}) async {
+    try {
+      await _beasiswaServices.deleteBeasiswa(token: token, id: id);
+      _allBeasiswas.removeWhere((b) => b.id == id);
+      notifyListeners();
+      return true;
+    } catch (e) {
       return false;
     }
   }
@@ -125,7 +194,6 @@ class AdminProvider with ChangeNotifier {
       }
       return true;
     } catch (e) {
-      print("Error updating status: $e");
       return false;
     }
   }

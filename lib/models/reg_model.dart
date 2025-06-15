@@ -18,13 +18,11 @@ class RegModel {
 
   // Factory constructor untuk membuat instance RegModel dari JSON
   factory RegModel.fromJson(Map<String, dynamic> json) {
-    // Memastikan 'details' tidak null dan merupakan sebuah list
     var detailsList = json['details'] as List? ?? [];
     return RegModel(
       id: json['id'],
       status: json['status'],
       description: json['description'] ?? '',
-      // Mengubah setiap item di list details menjadi objek RegDetailModel
       details:
           detailsList.map((detail) => RegDetailModel.fromJson(detail)).toList(),
       user: json['user'] != null ? UserModel.fromJson(json['user']) : null,

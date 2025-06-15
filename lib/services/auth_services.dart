@@ -4,7 +4,7 @@ import 'package:beasiswa/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthServices {
-  String baseUrl = 'http://192.168.1.15:8000/api';
+  String baseUrl = 'http://192.168.1.15:8000/api'; // url API
 
   Future<UserModel> register({
     required String name,
@@ -61,10 +61,7 @@ class AuthServices {
 
   Future<void> logout(String token) async {
     var url = Uri.parse('$baseUrl/logout');
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': token, // Kirim token untuk autentikasi
-    };
+    var headers = {'Content-Type': 'application/json', 'Authorization': token};
 
     var response = await http.post(url, headers: headers);
 

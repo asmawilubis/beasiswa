@@ -11,6 +11,9 @@ class BeasiswaProvider with ChangeNotifier {
   List<RegModel> _registrations = [];
   List<RegModel> get registrations => _registrations;
 
+  int? _selectedCategoryId;
+  int? get selectedCategoryId => _selectedCategoryId;
+
   bool isRegistered(int beasiswaId) {
     return _registrations.any(
       (reg) => reg.details.any((detail) => detail.beasiswa?.id == beasiswaId),
@@ -20,6 +23,13 @@ class BeasiswaProvider with ChangeNotifier {
   set beasiswa(List<BeasiswaModel> beasiswa) {
     _beasiswa = beasiswa;
     notifyListeners();
+  }
+
+  void clearUserSpecificData() {
+    _registrations = [];
+    _selectedCategoryId = null;
+    notifyListeners();
+    print('BeasiswaProvider data cleared.');
   }
 
   Future<void> getBeasiswa() async {

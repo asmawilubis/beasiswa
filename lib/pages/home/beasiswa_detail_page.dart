@@ -17,7 +17,6 @@ class BeasiswaDetailPage extends StatelessWidget {
     final pendaftaran = beasiswaProvider.getRegistrationFor(beasiswa.id);
 
     Widget header() {
-      // ... (kode header tidak berubah)
       return Column(
         children: [
           Container(
@@ -59,7 +58,6 @@ class BeasiswaDetailPage extends StatelessWidget {
     }
 
     Widget buildBottomWidget() {
-      // ... (kode buildBottomWidget tidak berubah, sudah benar)
       if (pendaftaran == null) {
         return Container(
           width: double.infinity,

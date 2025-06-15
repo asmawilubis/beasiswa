@@ -1,6 +1,5 @@
-// profile_page.dart
-
 import 'package:beasiswa/pages/login_page.dart';
+import 'package:beasiswa/providers/beasiswa_provider.dart';
 import 'package:beasiswa/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:beasiswa/providers/auth_provider.dart';
@@ -41,6 +40,11 @@ class ProfilePage extends StatelessWidget {
 
       if (confirm) {
         if (await authProvider.logout()) {
+          Provider.of<BeasiswaProvider>(
+            context,
+            listen: false,
+          ).clearUserSpecificData();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => LoginPage()),

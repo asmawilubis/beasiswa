@@ -10,7 +10,6 @@ class RegDetailModel {
   factory RegDetailModel.fromJson(Map<String, dynamic> json) {
     return RegDetailModel(
       id: json['id'],
-      // Mengasumsikan objek 'beasiswa' ada di dalam setiap 'detail'
       beasiswa: BeasiswaModel.fromJson(json['beasiswa']),
     );
   }

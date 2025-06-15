@@ -16,7 +16,6 @@ class AdminRegistrationDetailPage extends StatelessWidget {
     final beasiswa = registration.details.first.beasiswa;
 
     void updateStatus(String newStatus) async {
-      // Tampilkan dialog konfirmasi
       bool confirm =
           await showDialog(
             context: context,
@@ -53,7 +52,7 @@ class AdminRegistrationDetailPage extends StatelessWidget {
               content: Text('Status berhasil diubah menjadi "$newStatus"'),
             ),
           );
-          Navigator.pop(context); // Kembali ke dashboard
+          Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
