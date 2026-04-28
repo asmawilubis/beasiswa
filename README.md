@@ -1,16 +1,48 @@
 # beasiswa
 
-A new Flutter project.
+A new Flutter project for scholarship management.
 
-## Getting Started
+## Panduan Instalasi & Setup
 
-This project is a starting point for a Flutter application.
+Ikuti langkah-langkah di bawah ini untuk menyiapkan lingkungan pengembangan dan menjalankan aplikasi.
 
-A few resources to get you started if this is your first Flutter project:
+### 1. Prasyarat
+Pastikan sistem Anda telah terinstal:
+- **Flutter SDK** (Versi stabil terbaru)
+- **Dart SDK**
+- **Android Studio** atau **VS Code** (dengan ekstensi Flutter/Dart)
+- **Git**
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. Kloning Repositori
+```bash
+git clone https://github.com/asmawilubis/beasiswa.git
+cd beasiswa
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. Instalasi Dependensi
+Jalankan perintah berikut di direktori utama proyek:
+```bash
+flutter pub get
+```
+
+### 4. Verifikasi Lingkungan
+Gunakan `flutter doctor` untuk memastikan semua toolchain sudah siap:
+```bash
+flutter doctor
+```
+
+### 5. Menjalankan Aplikasi
+Pastikan perangkat (emulator atau perangkat fisik) sudah terhubung, lalu jalankan:
+```bash
+flutter run
+```
+
+Untuk menjalankan di platform tertentu secara spesifik:
+- **Web**: `flutter run -d chrome`
+- **Windows**: `flutter run -d windows`
+
+## Struktur Proyek
+- `lib/`: Berisi kode sumber utama Dart.
+- `assets/`: Berisi aset gambar, font, dan file statis lainnya.
+- `test/`: Berisi unit testing.
+
