@@ -4,7 +4,7 @@ import 'package:beasiswa/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthServices {
-  String baseUrl = 'http://192.168.1.15:8000/api'; // url API
+  String baseUrl = 'http://192.168.1.12:8000/api'; // url API
 
   Future<UserModel> register({
     required String name,

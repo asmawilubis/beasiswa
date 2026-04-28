@@ -6,7 +6,7 @@ import 'package:beasiswa/models/reg_model.dart';
 import 'package:http/http.dart' as http;
 
 class BeasiswaServices {
-  String baseUrl = 'http://192.168.1.15:8000/api';
+  String baseUrl = 'http://192.168.1.12:8000/api';
 
   Future<List<BeasiswaModel>> getBeasiswa({int? categoryId}) async {
     var url = Uri.parse('$baseUrl/scholars');
