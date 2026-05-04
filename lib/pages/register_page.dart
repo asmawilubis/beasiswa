@@ -1,58 +1,71 @@
 import 'package:beasiswa/theme.dart';
 import 'package:beasiswa/widgets/loading_button.dart';
+import 'package:beasiswa/widgets/custom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:beasiswa/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController fullNameController = TextEditingController(text: '');
-
-  TextEditingController userNameController = TextEditingController(text: '');
-
-  TextEditingController emailController = TextEditingController(text: '');
-
-  TextEditingController passwordController = TextEditingController(text: '');
+  final TextEditingController fullNameController = TextEditingController(
+    text: '',
+  );
+  final TextEditingController userNameController = TextEditingController(
+    text: '',
+  );
+  final TextEditingController emailController = TextEditingController(text: '');
+  final TextEditingController passwordController = TextEditingController(
+    text: '',
+  );
 
   bool isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+  void handleSignUp() async {
+    setState(() {
+      isLoading = true;
+    });
 
-    handleSignUp() async {
-      setState(() {
-        isLoading = true;
-      });
+    AuthProvider authProvider = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    );
 
-      if (await authProvider.register(
-        name: fullNameController.text,
-        username: userNameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-      )) {
-        Navigator.pushNamed(context, '/login');
-      } else {
+    if (await authProvider.register(
+      name: fullNameController.text,
+      username: userNameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+    )) {
+      if (mounted) Navigator.pushNamed(context, '/login');
+    } else {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: alertColor,
-            content: Text('Register Gagal', textAlign: TextAlign.center),
+            content: const Text('Register Gagal', textAlign: TextAlign.center),
           ),
         );
       }
+    }
 
+    if (mounted) {
       setState(() {
         isLoading = false;
       });
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Widget header() {
       return Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,191 +76,43 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontWeight: semiBold,
               ),
             ),
-            SizedBox(height: 2),
+            const SizedBox(height: 2),
             Text('Register Your Account!', style: subtitleTextStyle),
           ],
         ),
       );
     }
 
-    Widget fullName() {
-      return Container(
-        margin: EdgeInsets.only(top: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Full Name',
-              style: primaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-            SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: backgroundColor2,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Image.asset('assets/icon_name.png', width: 17),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: fullNameController,
-                        style: formTextStyle,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Full Name',
-                          hintStyle: subtitleTextStyle,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget userName() {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Username',
-              style: primaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-            SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: backgroundColor2,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Image.asset('assets/icon_username.png', width: 17),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: userNameController,
-                        style: formTextStyle,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Username',
-                          hintStyle: subtitleTextStyle,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget emailInput() {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Email Address',
-              style: primaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-            SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: backgroundColor2,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Image.asset('assets/icon_email.png', width: 17),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: emailController,
-                        style: formTextStyle,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Email Address',
-                          hintStyle: subtitleTextStyle,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget passwordInput() {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Password',
-              style: primaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-            SizedBox(height: 12),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: backgroundColor2,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Row(
-                  children: [
-                    Image.asset('assets/icon_password.png', width: 17),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: passwordController,
-                        style: formTextStyle,
-                        obscureText: true,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Password',
-                          hintStyle: subtitleTextStyle,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+    Widget content() {
+      return Column(
+        children: [
+          CustomFormField(
+            title: 'Full Name',
+            hintText: 'Your Full Name',
+            iconPath: 'assets/icon_name.png',
+            controller: fullNameController,
+            marginTop: 50,
+          ),
+          CustomFormField(
+            title: 'Username',
+            hintText: 'Your Username',
+            iconPath: 'assets/icon_username.png',
+            controller: userNameController,
+          ),
+          CustomFormField(
+            title: 'Email Address',
+            hintText: 'Your Email Address',
+            iconPath: 'assets/icon_email.png',
+            controller: emailController,
+          ),
+          CustomFormField(
+            title: 'Password',
+            hintText: 'Your Password',
+            iconPath: 'assets/icon_password.png',
+            controller: passwordController,
+            obscureText: true,
+          ),
+        ],
       );
     }
 
@@ -255,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return Container(
         height: 50,
         width: double.infinity,
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         child: TextButton(
           onPressed: handleSignUp,
           style: TextButton.styleFrom(
@@ -274,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     Widget footer() {
       return Container(
-        margin: EdgeInsets.only(bottom: 30),
+        margin: const EdgeInsets.only(bottom: 30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -309,12 +174,9 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header(),
-              fullName(),
-              userName(),
-              emailInput(),
-              passwordInput(),
+              content(),
               isLoading ? LoadingButton() : buttonRegister(),
-              Spacer(),
+              const Spacer(),
               footer(),
             ],
           ),
