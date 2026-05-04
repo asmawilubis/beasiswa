@@ -1,0 +1,6 @@
+buatkan issue.md yang berisi perencanaan untuk nanti di implementasikan oleh junior programmer atau mode AI yang lain.
+
+isi dari perencanaan tersebut adalah :
+
+dokumentasi instalasi dari project laravel back-end API ini, jelaskan setiap tahapan-tahapannya.
+implementasi dari perencanaan ini akan di kerjakan oleh junior programmer atau ai model yang lebih murah.

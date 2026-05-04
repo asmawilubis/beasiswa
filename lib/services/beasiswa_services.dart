@@ -5,8 +5,10 @@ import 'package:beasiswa/models/beasiswa_model.dart';
 import 'package:beasiswa/models/reg_model.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:beasiswa/shared/constants.dart';
+
 class BeasiswaServices {
-  String baseUrl = 'http://192.168.1.12:8000/api';
+  String baseUrl = AppConstants.baseUrl;
 
   Future<List<BeasiswaModel>> getBeasiswa({int? categoryId}) async {
     var url = Uri.parse('$baseUrl/scholars');

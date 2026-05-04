@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:beasiswa/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:beasiswa/shared/constants.dart';
+
 class AuthServices {
-  String baseUrl = 'http://192.168.1.12:8000/api'; // url API
+  String baseUrl = AppConstants.baseUrl; // url API
 
   Future<UserModel> register({
     required String name,
